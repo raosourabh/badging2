@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chatbot for Badging Assistance</title>
+    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_icon.svg">
+    <style>
+        :root {
+            --amazon-orange: #FF9900;
+            --amazon-blue: #232F3E;    
+            --amazon-light-gray: #F3F3F3;
+            --amazon-dark-gray: #37475A;
+            --amazon-white: #FFFFFF;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--amazon-light-gray);
+            color: var(--amazon-blue);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: var(--amazon-white);
+            padding: 15px 0;
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        header img {
+            height: 40px;
+        }
+        .header-title {
+            color: black;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        #chatbox {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        #inputArea {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        input[type="text"], select {
+            flex-grow: 1;
+            padding: 12px 16px;
+            border: 1px solid #D5D9D9;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #FFFFFF;
+        }
+        button {
+            background-color: var(--amazon-orange);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #E88B00;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+        .message.bot {
+            background-color: var(--amazon-light-gray);
+            margin-right: auto;
+        }
+        .message.user {
+            background-color: var(--amazon-orange);
+            color: white;
+            margin-left: auto;
+        }
+        #buttonArea {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        #buttonArea button {
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+        a {
+            color: var(--amazon-orange);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon Logo">
+        <div class="header-title">Chatbot for Badging Assistance</div>
+    </header>
+    <div class="container">
+        <div id="chatbox">
+            <div class="message bot">
+                👋 Hi there! I'm your friendly AI assistant ready to help with Amazon badging and general questions!
+            </div>
+        </div>
+        <div id="inputArea">
+            <input type="text" id="userInput" placeholder="Type your message here...">
+            <button onclick="handleUserInput()">Send</button>
+        </div>
+        <div id="buttonArea">
+            <button onclick="showBadgeIssuance()">Badge Issuance</button>
+            <button onclick="showAccessRequest()">Access Request</button>
+            <button onclick="showPhotoStudio()">Photo Studio</button>
+            <button onclick="showBuildingCard()">Building Card</button>
+            <button onclick="showAnniversaryBadge()">Anniversary Badge</button>
+            <button onclick="showSoftCopy()">Soft Copy</button>
+            <button onclick="showCustomPhoto()">Custom Photo</button>
+            <button onclick="showLoanerBadge()">Loaner Badge</button>
+        </div>
+    </div>
+
+    <script>
+        const chatbox = document.getElementById('chatbox');
+        const input = document.getElementById('userInput');
+
+        function addMessage(message, sender) {
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            div.innerHTML = message;
+            chatbox.appendChild(div);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        function handleUserInput() {
+            const msg = input.value.trim();
+            if (!msg) return;
+            
+            addMessage(msg, 'user');
+            input.value = '';
+            
+            // Simple keyword matching
+            const lowerMsg = msg.toLowerCase();
+            
+            if (lowerMsg.includes('lost') && lowerMsg.includes('badge')) {
+                addMessage('😔 Oh no! I\'m sorry to hear you lost your badge. Since you lost your badge, I\'ll help you get a replacement right away! Please visit your nearest badging office with your ID.', 'bot');
+            } else if (lowerMsg.includes('badge')) {
+                showBadgeIssuance();
+            } else if (lowerMsg.includes('access')) {
+                showAccessRequest();
+            } else if (lowerMsg.includes('photo') || lowerMsg.includes('studio')) {
+                showPhotoStudio();
+            } else if (lowerMsg.includes('building') || lowerMsg.includes('card')) {
+                showBuildingCard();
+            } else if (lowerMsg.includes('anniversary')) {
+                showAnniversaryBadge();
+            } else if (lowerMsg.includes('soft') || lowerMsg.includes('copy')) {
+                showSoftCopy();
+            } else if (lowerMsg.includes('custom')) {
+                showCustomPhoto();
+            } else if (lowerMsg.includes('loaner')) {
+                showLoanerBadge();
+            } else {
+                addMessage('I can help you with badging services. Please select an option from the menu below or type keywords like "badge", "access", "photo studio", etc.', 'bot');
+            }
+        }
+
+        function showBadgeIssuance() {
+            addMessage('🆔 <strong>Perfect! I\'ll help you get your badge sorted out!</strong><br><br>For badge issuance, please visit your nearest badging office with:<br>• Valid ID<br>• Employee information<br><br>Office hours: Monday to Friday, 10:00 AM – 5:00 PM', 'bot');
+        }
+
+        function showAccessRequest() {
+            addMessage('🔐 <strong>Got it! Let me help you with access permissions!</strong><br><br>For access requests:<br>• General Access: Visit <a href="https://acs-rightcrowd-apac-prod.corp.amazon.com/RightCrowd/ALR" target="_blank">Amazon Visit</a><br>• Restricted Access: Raise a ticket<br>• Wellness Room: Contact badge-india@amazon.com', 'bot');
+        }
+
+        function showPhotoStudio() {
+            addMessage('📸 <strong>Great! I\'d love to help you find a photo studio!</strong><br><br>Photo studios are available at all major Amazon locations:<br>• Hours: Monday to Friday, 10:00 AM – 5:00 PM<br>• Walk-ins welcome<br>• Located near badging offices', 'bot');
+        }
+
+        function showBuildingCard() {
+            addMessage('🏢 <strong>Perfect! I\'ll help you get your building card sorted out!</strong><br><br>For building cards, visit your local security reception:<br>• Bring valid ID<br>• Specify access requirements<br>• Available during business hours', 'bot');
+        }
+
+        function showAnniversaryBadge() {
+            addMessage('🎉 <strong>Wow! Anniversary badge time - how exciting!</strong><br><br>For anniversary badges:<br>• Using existing photo: Email badge-india@amazon.com<br>• New photo: Visit photo studio<br>• Specify your milestone year', 'bot');
+        }
+
+        function showSoftCopy() {
+            addMessage('📥 <strong>Absolutely! I can help you get your badge photo!</strong><br><br>Get your digital badge photo at:<br><a href="https://badger.acs.amazon.dev" target="_blank">badger.acs.amazon.dev</a><br>Click the download button (bottom left)', 'bot');
+        }
+
+        function showCustomPhoto() {
+            addMessage('📷 <strong>Perfect! I can help you upload your own photo!</strong><br><br>Upload custom photos through:<br>Phonetool → Edit my info → Basic Info → Upload', 'bot');
+        }
+
+        function showLoanerBadge() {
+            addMessage('🏷️ <strong>Perfect! Loaner badges are super easy to arrange!</strong><br><br>For loaner badges:<br>• Employee Loaner (Blue): Visit security desk<br>• Contractor Loaner (Yellow): Contact security<br>• Bring valid ID and documentation', 'bot');
+        }
+
+        // Enter key support
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleUserInput();
+            }
+        });
+    </script>
+</body>
+</html>
